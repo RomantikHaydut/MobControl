@@ -5,36 +5,38 @@ using UnityEngine.UI;
 
 public class touchControls : MonoBehaviour
 {
+    #region Spawn Projectile
+    [SerializeField] private float spawnCooldown = 0f;
+    [SerializeField] private float spawnCooldownMax = 0.5f;
+    [SerializeField] private Transform spawnPosition;
+    #endregion
+    #region Touch
     private Touch theTouch;
     private float timeTouchEnded;
     public float sensitivity = 13;
+    #endregion
 
-    void Start()
+    private void Start()
     {
-        
+        spawnCooldown = 0f;
     }
-
- 
-    void Update()
+    private void Update()
     {
         Movement();
-        checkPosition();
+        CheckPosition();
     }
 
-    void Movement()
+    private void Movement()
     {
         if (Input.touchCount > 0)
         {
             theTouch = Input.GetTouch(0);
             if (theTouch.phase == TouchPhase.Began)
             {
-                //print("dokundu");
-                // print(theTouch.position);
+                SpawnProjectile();
             }
             if (theTouch.phase == TouchPhase.Stationary || theTouch.phase == TouchPhase.Moved)
             {
-                // transform.position.x += (thetTouch.deltaPosition.magnitude / Time.deltaTime)
-                //print(theTouch.deltaPosition.x / Screen.width);
                 if (theTouch.deltaPosition.x < 0)
                 {
                     if (transform.position.x > -4.75)
@@ -57,6 +59,7 @@ public class touchControls : MonoBehaviour
                         transform.position = new Vector3(4.75f, transform.position.y, transform.position.z);
                     }
                 }
+                SpawnProjectile();
             }
             if (theTouch.phase == TouchPhase.Ended)
             {
@@ -65,15 +68,38 @@ public class touchControls : MonoBehaviour
         }
     }
 
-    void checkPosition()
+    void CheckPosition()
     {
         if (transform.position.x > 4.75f)
         {
             transform.position = new Vector3(4.75f, transform.position.y, transform.position.z);
         }
-        else if(transform.position.x < -4.75f)
+        else if (transform.position.x < -4.75f)
         {
             transform.position = new Vector3(-4.75f, transform.position.y, transform.position.z);
+        }
+    }
+
+    private void SpawnProjectile()
+    {
+        if (spawnCooldown <= 0)
+        {
+            SpawnManager.Instance.SpawnProjectile(spawnPosition);
+            StartCoroutine(SpawnCooldownTimer_Corotine());
+        }
+    }
+
+    private IEnumerator SpawnCooldownTimer_Corotine()
+    {
+        spawnCooldown = spawnCooldownMax;
+        while (true)
+        {
+            yield return new WaitForFixedUpdate();
+            spawnCooldown -= Time.deltaTime;
+            if (spawnCooldown <= 0)
+            {
+                yield break;
+            }
         }
     }
 }
