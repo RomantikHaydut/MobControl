@@ -17,7 +17,7 @@ public class SpawnManager : MonoBehaviour
     public void SpawnProjectile(Transform spawnCenter) // Tekli spawn. Player yapýyor ve hýzlý baþlangýcý var.
     {
         GameObject projectileClone = Instantiate(projectilePrefab, spawnCenter.position, spawnCenter.rotation);
-        projectileClone.GetComponent<ProjectileController>().FastStart();
+        projectileClone.GetComponent<Clone>().FastStart();
     }
 
     public void SpawnProjectile(Transform spawnCenter, GameObject spawnObject, int spawnCount, Multiplier multiplier) // Çoklu spawn. Multiplier kapýlarý yapýyor.
@@ -27,15 +27,10 @@ public class SpawnManager : MonoBehaviour
         float angle = 0f; // baþlangýç açýsý
         for (int i = 0; i < spawnCount; i++)
         {
-            /*
-            float x = Mathf.Cos(Mathf.Deg2Rad * angle) * radius; // x koordinatýný hesapla
-            float z = Mathf.Sin(Mathf.Deg2Rad * angle) * radius; // y koordinatýný hesapla
-            Vector3 spawnPosition = spawnCenter.position + new Vector3(x, 0, z); // nesnenin yaratýlacaðý konum
-            */
-            Vector3 spawnPosition = spawnCenter.position + Random.onUnitSphere; // nesnenin yaratýlacaðý konum
+            Vector3 spawnPosition = spawnCenter.position + Random.onUnitSphere * 0.1f; // nesnenin yaratýlacaðý konum
             spawnPosition.y = spawnObject.transform.position.y;
-            GameObject projectileClone = Instantiate(projectilePrefab, spawnPosition, spawnCenter.rotation); // nesneyi yarat
-            projectileClone.GetComponent<ProjectileController>().AddMultiplierDoor(multiplier);  // Spawn olan objenin tekrar kendini spawnlamamasý için o objeye spawn kapýsýný ekliyoruz.
+            Clone clone = Instantiate(spawnObject, spawnPosition, spawnCenter.rotation).GetComponent<Clone>(); // nesneyi yarat
+            multiplier.AddCloneToList(clone);
             angle += angleStep; // açýyý arttýr
         }
     }

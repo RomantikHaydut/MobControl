@@ -11,6 +11,7 @@ public class touchControls : MonoBehaviour
     [SerializeField] private Transform spawnPosition;
     #endregion
     #region Touch
+    [SerializeField] private float bound = 0.4f;
     private Touch theTouch;
     private float timeTouchEnded;
     public float sensitivity = 13;
@@ -39,24 +40,24 @@ public class touchControls : MonoBehaviour
             {
                 if (theTouch.deltaPosition.x < 0)
                 {
-                    if (transform.position.x > -4.75)
+                    if (transform.position.x > -bound)
                     {
                         transform.position += new Vector3((theTouch.deltaPosition.x / Screen.width * sensitivity), 0, 0);
                     }
                     else
                     {
-                        transform.position = new Vector3(-4.75f, transform.position.y, transform.position.z);
+                        transform.position = new Vector3(-bound, transform.position.y, transform.position.z);
                     }
                 }
                 else
                 {
-                    if (transform.position.x < 4.75f)
+                    if (transform.position.x < bound)
                     {
                         transform.position += new Vector3((theTouch.deltaPosition.x / Screen.width * sensitivity), 0, 0);
                     }
                     else
                     {
-                        transform.position = new Vector3(4.75f, transform.position.y, transform.position.z);
+                        transform.position = new Vector3(bound, transform.position.y, transform.position.z);
                     }
                 }
                 SpawnProjectile();
@@ -70,13 +71,13 @@ public class touchControls : MonoBehaviour
 
     void CheckPosition()
     {
-        if (transform.position.x > 4.75f)
+        if (transform.position.x > bound)
         {
-            transform.position = new Vector3(4.75f, transform.position.y, transform.position.z);
+            transform.position = new Vector3(bound, transform.position.y, transform.position.z);
         }
-        else if (transform.position.x < -4.75f)
+        else if (transform.position.x < -bound)
         {
-            transform.position = new Vector3(-4.75f, transform.position.y, transform.position.z);
+            transform.position = new Vector3(-bound, transform.position.y, transform.position.z);
         }
     }
 

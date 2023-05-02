@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ProjectileController : MonoBehaviour
+public class Clone : MonoBehaviour
 {
     [SerializeField] private ProjectileTypeSO projectileType;
     private float health;
@@ -10,7 +10,7 @@ public class ProjectileController : MonoBehaviour
     private float damage;
     private List<Multiplier> multipliedMultipliers = new List<Multiplier>();
 
-    private void Awake()
+    void Awake()
     {
         health = projectileType.health;
         speed = projectileType.speed;
@@ -21,7 +21,7 @@ public class ProjectileController : MonoBehaviour
     {
         Movement();
     }
-    private void Movement()
+    protected virtual void Movement()
     {
         transform.position += transform.forward * Time.deltaTime * speed;
     }
