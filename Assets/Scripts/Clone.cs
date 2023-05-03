@@ -8,7 +8,8 @@ public class Clone : MonoBehaviour
     private float health;
     private float speed;
     private float damage;
-    private List<Multiplier> multipliedMultipliers = new List<Multiplier>();
+
+    private bool isFighting = false;
 
     void Awake()
     {
@@ -26,13 +27,29 @@ public class Clone : MonoBehaviour
         transform.position += transform.forward * Time.deltaTime * speed;
     }
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage, out bool isDead)
     {
+        isDead = false;
         health -= damage;
         if (health <= 0)
         {
-            // Die
+            isDead = true;
+            Destroy(gameObject);
         }
+    }
+
+    public float GetDamage()
+    {
+        return damage;
+    }
+
+    public void StartFight()
+    {
+        isFighting = true;
+    }
+    public void FinishFight()
+    {
+        isFighting = false;
     }
 
     public void FastStart()
@@ -67,13 +84,5 @@ public class Clone : MonoBehaviour
         }
     }
 
-    public void AddMultiplierDoor(Multiplier multiplier)
-    {
-        multipliedMultipliers.Add(multiplier);
-    }
 
-    public bool IsMultipliedUsedBefore(Multiplier multiplier)
-    {
-        return (multipliedMultipliers.Contains(multiplier));
-    }
 }
