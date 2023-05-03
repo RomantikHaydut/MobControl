@@ -4,13 +4,9 @@ using UnityEngine;
 
 public class CastleManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public List<GameObject> castles;
+    int index = 0;
 
-    // Update is called once per frame
     void Update()
     {
         

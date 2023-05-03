@@ -90,4 +90,20 @@ public class Clone : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.TryGetComponent(out EnemySpawner enemySpawner))
+        {
+            // kaleye doðru git kodu
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.TryGetComponent(out EnemySpawner enemySpawner))
+        {
+            enemySpawner.takeDmage(damage);
+            Destroy(this.gameObject, 0.5f);
+        }
+    }
 }
