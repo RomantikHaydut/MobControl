@@ -17,3 +17,5 @@ MonoBehaviour:
   health: 100
   speed: 0.5
   damage: 35
+  normalColor: {r: 0, g: 0.2243948, b: 1, a: 0}
+  popupColor: {r: 0.53733534, g: 0.5683785, b: 0.990566, a: 0}

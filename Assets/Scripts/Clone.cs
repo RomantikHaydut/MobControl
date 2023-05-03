@@ -13,6 +13,7 @@ public class Clone : MonoBehaviour
     [SerializeField] private Material myMaterial;
     [SerializeField] private Color normalColor;
     [SerializeField] private Color popupColor;
+    private Vector3 direction;
     void Awake()
     {
         health = projectileType.health;
@@ -23,6 +24,7 @@ public class Clone : MonoBehaviour
         normalColor = projectileType.normalColor;
         GetComponentInChildren<MeshRenderer>().material.color = normalColor;
         popupColor = projectileType.popupColor;
+        direction = transform.forward;
     }
 
     private void FixedUpdate()
@@ -31,7 +33,7 @@ public class Clone : MonoBehaviour
     }
     protected virtual void Movement()
     {
-        transform.position += transform.forward * Time.deltaTime * speed;
+        transform.position += direction * Time.deltaTime * speed;
     }
 
     public void TakeDamage(float damage, out bool isDead)
@@ -90,11 +92,13 @@ public class Clone : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
         if (other.gameObject.TryGetComponent(out EnemySpawner enemySpawner))
         {
-            // kaleye doðru git kodu
+            direction = (enemySpawner.transform.position - transform.position);
+            direction.y = 0;
+            direction = direction.normalized;
         }
     }
 
@@ -102,8 +106,8 @@ public class Clone : MonoBehaviour
     {
         if (collision.gameObject.TryGetComponent(out EnemySpawner enemySpawner))
         {
-            enemySpawner.takeDmage(damage);
-            Destroy(this.gameObject, 0.5f);
+            enemySpawner.takeDamage();
+            Destroy(this.gameObject);
         }
     }
 }

@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
+
 
 public class touchControls : MonoBehaviour
 {
@@ -102,5 +104,19 @@ public class touchControls : MonoBehaviour
                 yield break;
             }
         }
+    }
+
+    public void moveWithCamera(Transform point)
+    {
+        Transform nextTransform = FindAnyObjectByType<CastleManager>().nextCastle();
+        Camera.main.transform.parent = transform;
+        transform.DOMove(point.position, 3).OnComplete(() =>
+        {
+            transform.DORotateQuaternion(Quaternion.LookRotation(nextTransform.position - transform.position), 3).OnComplete(() =>
+            {
+                Camera.main.transform.parent = null;
+                FindAnyObjectByType<CastleManager>().activateCastle();
+            });
+        }); 
     }
 }

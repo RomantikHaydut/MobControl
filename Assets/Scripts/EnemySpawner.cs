@@ -16,19 +16,30 @@ public class EnemySpawner : MonoBehaviour
     }
     private void OnEnable()
     {
-        if (isActive)
-        {
             InvokeRepeating("Spawn", 1f, .5f);
-        }
     }
 
     private void Spawn()
     {
-        Instantiate(enemyPrefab, transform.position, transform.rotation);
+        if (isActive)
+        {
+            Instantiate(enemyPrefab, transform.GetChild(0).position, transform.rotation);
+        }
+       
     }
 
-    public void takeDmage(float damage)
+    public void takeDamage()
     {
-        health -= damage;
+        health -= 1;
+        if (health <= 0)
+        {
+            isActive = false;
+            Clone[] clones = GameObject.FindObjectsOfType<Clone>();
+            for (int i = 0; i < clones.Length; i++)
+                Destroy(clones[i].gameObject);
+
+            FindAnyObjectByType<touchControls>().moveWithCamera(transform);
+            this.gameObject.SetActive(false);
+        }
     }
 }
