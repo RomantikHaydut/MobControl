@@ -37,7 +37,6 @@ public class EnemySpawner : MonoBehaviour
             Clone[] clones = GameObject.FindObjectsOfType<Clone>();
             for (int i = 0; i < clones.Length; i++)
                 Destroy(clones[i].gameObject);
-
             FindAnyObjectByType<touchControls>().moveWithCamera(transform);
             this.gameObject.SetActive(false);
         }
