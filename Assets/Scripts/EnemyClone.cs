@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class EnemyClone : MonoBehaviour
 {
@@ -10,11 +11,19 @@ public class EnemyClone : MonoBehaviour
     private float damage;
     private bool isFighting = false;
 
+    private Material myMaterial;
+    private Color normalColor;
+    private Color popupColor;
+
     void Awake()
     {
         health = projectileType.health;
         speed = projectileType.speed;
         damage = projectileType.damage;
+
+        popupColor = projectileType.popupColor;
+        myMaterial = (GetComponentInChildren<MeshRenderer>()).material;
+        normalColor = myMaterial.color;
     }
 
     private void FixedUpdate()
@@ -26,8 +35,16 @@ public class EnemyClone : MonoBehaviour
         transform.position += transform.forward * Time.deltaTime * speed;
     }
 
+    private void Popup()
+    {
+        myMaterial.color = normalColor;
+        float popupTime = 0.1f;
+        myMaterial.DOColor(popupColor, popupTime).OnComplete(() => { myMaterial.DOColor(normalColor, popupTime); });
+    }
+
     public void TakeDamage(float damage, Clone clone)
     {
+        Popup();
         health -= damage;
         if (health <= 0)
         {
@@ -51,7 +68,7 @@ public class EnemyClone : MonoBehaviour
 
     private IEnumerator Fight_Coroutine(Clone clone)
     {
-        float fightDelay = 0.3f;
+        float fightDelay = 0.25f;
         bool isEnemyDead;
         while (true)
         {
@@ -88,16 +105,16 @@ public class EnemyClone : MonoBehaviour
         }
     }
 
-    private void OnTriggerStay(Collider other)
-    {
-        if (!isFighting)
-        {
-            if (other.gameObject.TryGetComponent(out Clone clone))
-            {
-                StartFight(clone);
-            }
-        }
-    }
+    //private void OnTriggerStay(Collider other)
+    //{
+    //    if (!isFighting)
+    //    {
+    //        if (other.gameObject.TryGetComponent(out Clone clone))
+    //        {
+    //            StartFight(clone);
+    //        }
+    //    }
+    //}
 
     private void OnTriggerExit(Collider other)
     {

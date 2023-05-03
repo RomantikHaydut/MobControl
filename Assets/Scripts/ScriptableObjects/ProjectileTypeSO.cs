@@ -14,6 +14,10 @@ public class ProjectileTypeSO : ScriptableObject
     public float speed;
 
     public float damage;
+
+    public Color normalColor;
+
+    public Color popupColor;
     public enum Type
     {
         Friend,

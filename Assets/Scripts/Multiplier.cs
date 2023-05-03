@@ -11,13 +11,10 @@ public class Multiplier : MonoBehaviour
     {
         if (other.gameObject.TryGetComponent(out Clone clone))
         {
-            if (clone.CanClone())
+            if (!IsCloneCloned(clone))
             {
-                if (!IsCloneCloned(clone))
-                {
-                    AddCloneToList(clone);
-                    SpawnManager.Instance.SpawnProjectile(other.gameObject.transform, other.gameObject, multiplierFactor, this);
-                }
+                AddCloneToList(clone);
+                SpawnManager.Instance.SpawnProjectile(other.gameObject.transform, other.gameObject, multiplierFactor, this);
             }
         }
     }
