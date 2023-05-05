@@ -2635,6 +2635,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2769383837696307533, guid: 8624464b50917d249946872c8c9b2912,
         type: 3}
+      propertyPath: maxSpawnScore
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 2769383837696307533, guid: 8624464b50917d249946872c8c9b2912,
+        type: 3}
       propertyPath: projectilePrefab
       value: 
       objectReference: {fileID: 2977894694685288544, guid: 30c9343f97a9dda4a9fb5a11981e20c6,
