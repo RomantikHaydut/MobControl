@@ -11,75 +11,60 @@ public class touchControls : MonoBehaviour
     [SerializeField] private float spawnCooldown = 0f;
     [SerializeField] private float spawnCooldownMax = 0.5f;
     [SerializeField] private Transform spawnPosition;
+    private PositionManager pm;
     #endregion
     #region Touch
-    [SerializeField] private float bound = 0.4f;
+    [SerializeField] private float rightBound;
+    [SerializeField] private float leftBound;
     private Touch theTouch;
     private float timeTouchEnded;
     public float sensitivity = 13;
     #endregion
-
+    public bool isBound;
+    public bool isMoving;
+    public bool canGiantSpawn;
     private void Start()
     {
         spawnCooldown = 0f;
+        pm = FindAnyObjectByType<PositionManager>();
+        rightBound = pm.getSubPoint().position.x + pm.getBoundPoint();
+        leftBound = pm.getSubPoint().position.x - pm.getBoundPoint();
     }
     private void Update()
     {
-        Movement();
-        CheckPosition();
+        if (!isMoving)
+        {
+            Movement();
+        }
     }
 
     private void Movement()
     {
+
         if (Input.touchCount > 0)
         {
             theTouch = Input.GetTouch(0);
             if (theTouch.phase == TouchPhase.Began)
             {
                 SpawnProjectile();
+                canGiantSpawn = false;
             }
             if (theTouch.phase == TouchPhase.Stationary || theTouch.phase == TouchPhase.Moved)
             {
-                if (theTouch.deltaPosition.x < 0)
+                float coefficient = (theTouch.deltaPosition.x / Screen.width * sensitivity);
+                if ((transform.position + transform.right * coefficient).x < rightBound)
                 {
-                    if (transform.position.x > -bound)
+                    if ((transform.position + transform.right * coefficient).x > leftBound)
                     {
-                        transform.position += new Vector3((theTouch.deltaPosition.x / Screen.width * sensitivity), 0, 0);
-                    }
-                    else
-                    {
-                        transform.position = new Vector3(-bound, transform.position.y, transform.position.z);
-                    }
-                }
-                else
-                {
-                    if (transform.position.x < bound)
-                    {
-                        transform.position += new Vector3((theTouch.deltaPosition.x / Screen.width * sensitivity), 0, 0);
-                    }
-                    else
-                    {
-                        transform.position = new Vector3(bound, transform.position.y, transform.position.z);
+                        transform.position += transform.right * (theTouch.deltaPosition.x / Screen.width * sensitivity);
                     }
                 }
                 SpawnProjectile();
             }
             if (theTouch.phase == TouchPhase.Ended)
             {
-                //print("dokunma bitti");
+                canGiantSpawn = true;
             }
-        }
-    }
-
-    void CheckPosition()
-    {
-        if (transform.position.x > bound)
-        {
-            transform.position = new Vector3(bound, transform.position.y, transform.position.z);
-        }
-        else if (transform.position.x < -bound)
-        {
-            transform.position = new Vector3(-bound, transform.position.y, transform.position.z);
         }
     }
 
@@ -87,7 +72,7 @@ public class touchControls : MonoBehaviour
     {
         if (spawnCooldown <= 0)
         {
-            SpawnManager.Instance.SpawnProjectile(spawnPosition);
+            SpawnManager.Instance.SpawnProjectile(spawnPosition, canGiantSpawn);
             StartCoroutine(SpawnCooldownTimer_Corotine());
         }
     }
@@ -105,17 +90,30 @@ public class touchControls : MonoBehaviour
             }
         }
     }
-
+    public void setSubPoint()
+    {
+        transform.position = pm.getSubPointIncrease().position;
+    }
     public void moveWithCamera(Transform point)
     {
+        setSubPoint();
+        isMoving = true;
+        Transform point2 = pm.getSubPoint();
         Transform nextTransform = FindAnyObjectByType<CastleManager>().nextCastle();
         Camera.main.transform.parent = transform;
         transform.DOMove(point.position, 3).OnComplete(() =>
         {
             transform.DORotateQuaternion(Quaternion.LookRotation(nextTransform.position - transform.position), 3).OnComplete(() =>
             {
-                Camera.main.transform.parent = null;
-                FindAnyObjectByType<CastleManager>().activateCastle();
+                transform.DOMove(point2.position, 3).OnComplete(() =>
+                {
+                    Camera.main.transform.parent = null;
+                    FindAnyObjectByType<CastleManager>().activateCastle();
+                    rightBound = pm.getSubPoint().position.x + pm.getBoundPoint();
+                    leftBound = pm.getSubPoint().position.x - pm.getBoundPoint();
+                    isMoving = false;
+                }); 
+               
             });
         }); 
     }

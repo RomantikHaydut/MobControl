@@ -10,10 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 931a3408dbdff3647baca971747ce45b, type: 3}
-  m_Name: Basic_2
+  m_Name: Enemy_Giant
   m_EditorClassIdentifier: 
-  type: 0
-  level: 2
+  type: 1
+  level: 1
   health: 150
   speed: 0.51
-  damage: 40
+  damage: 45
+  normalColor: {r: 0.6509434, g: 0, b: 0, a: 0}
+  popupColor: {r: 0.764151, g: 0.4289338, b: 0.4289338, a: 0}

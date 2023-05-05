@@ -16,7 +16,6 @@ public class GameManager : MonoBehaviour
     
     public void gameStart()
     {
-        startButton.SetActive(false);
         castleManager.activateCastle();
     }
 

@@ -11,10 +11,10 @@ GameObject:
   - component: {fileID: 1826918559831594170}
   - component: {fileID: 934752071119371708}
   - component: {fileID: 7102433039138777911}
-  - component: {fileID: 4974410829337551598}
-  - component: {fileID: 2747485667184606763}
+  - component: {fileID: -507875510005693896}
+  - component: {fileID: 6847592872070746000}
   m_Layer: 0
-  m_Name: Projectile_Friend 1
+  m_Name: EnemyGiant
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 2977894694685288544}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 8546962708700643549}
@@ -65,7 +65,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 116
   m_CollisionDetection: 0
---- !u!114 &4974410829337551598
+--- !u!114 &-507875510005693896
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -74,14 +74,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 2977894694685288544}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab50c2c8470fff64a95304b10752325a, type: 3}
+  m_Script: {fileID: 11500000, guid: 9262445df279b2a4793159fb149f66ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectileType: {fileID: 11400000, guid: 9ff46f5edbb81e245a2eccfb3e6e5635, type: 2}
-  myMaterial: {fileID: 0}
-  normalColor: {r: 0, g: 0, b: 0, a: 0}
-  popupColor: {r: 0, g: 0, b: 0, a: 0}
---- !u!135 &2747485667184606763
+  projectileType: {fileID: 11400000, guid: 764019acbe8df664eac5497a04c3f7be, type: 2}
+--- !u!135 &6847592872070746000
 SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -155,7 +152,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 28cd80d086dbff5438f49da52de90bd2, type: 2}
+  - {fileID: 2100000, guid: 3b2926ac075501d47a6d2621aec3188b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

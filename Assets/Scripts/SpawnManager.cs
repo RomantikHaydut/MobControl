@@ -6,7 +6,9 @@ public class SpawnManager : MonoBehaviour
 {
     public static SpawnManager Instance;
     [SerializeField] private GameObject projectilePrefab;
-
+    [SerializeField] private GameObject projectilePrefabGiant;
+    [SerializeField] private float spawnScore = 0;
+    public float maxSpawnScore = 45;
     private void Awake()
     {
         if (Instance == null)
@@ -14,10 +16,19 @@ public class SpawnManager : MonoBehaviour
             Instance = this;
         }
     }
-    public void SpawnProjectile(Transform spawnCenter) // Tekli spawn. Player yapýyor ve hýzlý baþlangýcý var.
+    public void SpawnProjectile(Transform spawnCenter, bool canGiantSpawn) // Tekli spawn. Player yapýyor ve hýzlý baþlangýcý var.
     {
-        GameObject projectileClone = Instantiate(projectilePrefab, spawnCenter.position, spawnCenter.rotation);
-        projectileClone.GetComponent<Clone>().FastStart();
+        if (checkSpawnScore(canGiantSpawn) && canGiantSpawn)
+        {
+            GameObject projectileClone = Instantiate(projectilePrefabGiant, spawnCenter.position, spawnCenter.rotation); // devlerin çoðalmasý
+            projectileClone.GetComponent<Clone>().FastStart();
+        }
+        else
+        {
+            GameObject projectileClone = Instantiate(projectilePrefab, spawnCenter.position, spawnCenter.rotation);
+            spawnScore++;
+            projectileClone.GetComponent<Clone>().FastStart();
+        }
     }
 
     public void SpawnProjectile(Transform spawnCenter, GameObject spawnObject, int spawnCount, Multiplier multiplier) // Çoklu spawn. Multiplier kapýlarý yapýyor.
@@ -33,5 +44,14 @@ public class SpawnManager : MonoBehaviour
             multiplier.AddCloneToList(clone);
             angle += angleStep; // açýyý arttýr
         }
+    }
+    bool checkSpawnScore(bool canGiant)
+    {
+        if (spawnScore >= maxSpawnScore && canGiant)
+        {
+            spawnScore = 0;
+            return true;
+        }
+        return false;
     }
 }

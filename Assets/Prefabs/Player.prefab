@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 9037419525106034804}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -147,8 +147,11 @@ MonoBehaviour:
   spawnCooldown: 0.5
   spawnCooldownMax: 0.5
   spawnPosition: {fileID: 9037419526205480674}
-  bound: 0.4
+  rightBound: 0
+  leftBound: 0
   sensitivity: 1
+  isBound: 0
+  isMoving: 0
 --- !u!1 &9037419526205480675
 GameObject:
   m_ObjectHideFlags: 0
