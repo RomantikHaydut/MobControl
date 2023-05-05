@@ -24,27 +24,10 @@ public class Clone : MonoBehaviour
         damage = projectileType.damage;
         
         direction = transform.forward;
-    }
 
-    private void Start()
-    {
         popupColor = projectileType.popupColor;
-
-        //skinnedMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
-        //if (skinnedMeshRenderer != null)
-        //{
-        //    normalColor = skinnedMeshRenderer.material.color;
-        //    myMaterial = skinnedMeshRenderer.material;
-        //    skinnedMeshRenderer.material.color = normalColor;
-        //}
-        //else
-        //{
-        //    meshRenderer = GetComponentInChildren<MeshRenderer>();
-        //    myMaterial = meshRenderer.material;
-        //    meshRenderer.material.color = normalColor;
-        //}
-
     }
+
 
     private void FixedUpdate()
     {
@@ -63,7 +46,7 @@ public class Clone : MonoBehaviour
         if (health <= 0)
         {
             isDead = true;
-            DOTween.KillAll();
+            DOTween.Kill(this);
             Destroy(gameObject);
         }
     }
@@ -72,7 +55,7 @@ public class Clone : MonoBehaviour
     {
         if (isGiant)
         {
-            DOTween.KillAll();
+            DOTween.Kill(this);
             skinnedMeshRendererList[0].material.color = normalColor;
             skinnedMeshRendererList[1].material.color = normalColor;
             float popupTime = 0.1f;
