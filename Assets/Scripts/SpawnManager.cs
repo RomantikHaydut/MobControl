@@ -8,7 +8,7 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] private GameObject projectilePrefab;
     [SerializeField] private GameObject projectilePrefabGiant;
     [SerializeField] private float spawnScore = 0;
-    public float maxSpawnScore = 45;
+    public float maxSpawnScore = 10;
     private void Awake()
     {
         if (Instance == null)

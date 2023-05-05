@@ -23,6 +23,12 @@ public class touchControls : MonoBehaviour
     public bool isBound;
     public bool isMoving;
     public bool canGiantSpawn;
+    private Animator animator;
+
+    private void Awake()
+    {
+        animator = GetComponent<Animator>();
+    }
     private void Start()
     {
         spawnCooldown = 0f;
@@ -46,7 +52,7 @@ public class touchControls : MonoBehaviour
             theTouch = Input.GetTouch(0);
             if (theTouch.phase == TouchPhase.Began)
             {
-                SpawnProjectile();
+                StartFire();
                 canGiantSpawn = false;
             }
             if (theTouch.phase == TouchPhase.Stationary || theTouch.phase == TouchPhase.Moved)
@@ -59,22 +65,31 @@ public class touchControls : MonoBehaviour
                         transform.position += transform.right * (theTouch.deltaPosition.x / Screen.width * sensitivity);
                     }
                 }
-                SpawnProjectile();
             }
             if (theTouch.phase == TouchPhase.Ended)
             {
                 canGiantSpawn = true;
+                StopFire();
             }
         }
     }
 
+    private void StartFire()
+    {
+        animator.SetBool("Fire", true);
+    }
+    private void StopFire()
+    {
+        animator.SetBool("Fire", false);
+    }
+
     private void SpawnProjectile()
     {
-        if (spawnCooldown <= 0)
-        {
+        //if (spawnCooldown <= 0)
+        //{
             SpawnManager.Instance.SpawnProjectile(spawnPosition, canGiantSpawn);
-            StartCoroutine(SpawnCooldownTimer_Corotine());
-        }
+            //StartCoroutine(SpawnCooldownTimer_Corotine());
+        //}
     }
 
     private IEnumerator SpawnCooldownTimer_Corotine()
@@ -96,6 +111,7 @@ public class touchControls : MonoBehaviour
     }
     public void moveWithCamera(Transform point)
     {
+        StopFire();
         setSubPoint();
         isMoving = true;
         Transform point2 = pm.getSubPoint();

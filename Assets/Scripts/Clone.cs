@@ -14,17 +14,36 @@ public class Clone : MonoBehaviour
     [SerializeField] private Color normalColor;
     [SerializeField] private Color popupColor;
     private Vector3 direction;
+    [SerializeField] List<SkinnedMeshRenderer>  skinnedMeshRendererList = new List<SkinnedMeshRenderer>();
+    MeshRenderer meshRenderer;
+    public bool isGiant;
     void Awake()
     {
         health = projectileType.health;
         speed = projectileType.speed;
         damage = projectileType.damage;
-
-        myMaterial = (GetComponentInChildren<MeshRenderer>()).material;
-        normalColor = projectileType.normalColor;
-        GetComponentInChildren<MeshRenderer>().material.color = normalColor;
-        popupColor = projectileType.popupColor;
+        
         direction = transform.forward;
+    }
+
+    private void Start()
+    {
+        popupColor = projectileType.popupColor;
+
+        //skinnedMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
+        //if (skinnedMeshRenderer != null)
+        //{
+        //    normalColor = skinnedMeshRenderer.material.color;
+        //    myMaterial = skinnedMeshRenderer.material;
+        //    skinnedMeshRenderer.material.color = normalColor;
+        //}
+        //else
+        //{
+        //    meshRenderer = GetComponentInChildren<MeshRenderer>();
+        //    myMaterial = meshRenderer.material;
+        //    meshRenderer.material.color = normalColor;
+        //}
+
     }
 
     private void FixedUpdate()
@@ -44,16 +63,22 @@ public class Clone : MonoBehaviour
         if (health <= 0)
         {
             isDead = true;
+            DOTween.KillAll();
             Destroy(gameObject);
         }
     }
 
     private void Popup()
     {
-        myMaterial.color = normalColor;
-        float popupTime = 0.1f;
-        myMaterial.DOColor(popupColor, popupTime).OnComplete(() => { myMaterial.DOColor(normalColor, popupTime); });
-        GetComponentInChildren<MeshRenderer>().material = myMaterial;
+        if (isGiant)
+        {
+            DOTween.KillAll();
+            skinnedMeshRendererList[0].material.color = normalColor;
+            skinnedMeshRendererList[1].material.color = normalColor;
+            float popupTime = 0.1f;
+            skinnedMeshRendererList[0].material.DOColor(Color.red, popupTime).OnComplete(() => { skinnedMeshRendererList[0].material.DOColor(normalColor, popupTime); });
+            skinnedMeshRendererList[1].material.DOColor(Color.red, popupTime).OnComplete(() => { skinnedMeshRendererList[1].material.DOColor(normalColor, popupTime); });
+        }
     }
 
     public float GetDamage()
