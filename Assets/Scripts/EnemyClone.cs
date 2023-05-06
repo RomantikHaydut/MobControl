@@ -22,7 +22,7 @@ public class EnemyClone : MonoBehaviour
         damage = projectileType.damage;
 
         popupColor = projectileType.popupColor;
-        myMaterial = (GetComponentInChildren<MeshRenderer>()).material;
+        myMaterial = (GetComponentInChildren<SkinnedMeshRenderer>()).material;
         normalColor = myMaterial.color;
     }
 

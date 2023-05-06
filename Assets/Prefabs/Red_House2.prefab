@@ -131,7 +131,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c25e79e054e1c63429492bd827bcaca8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 2977894694685288544, guid: 4be6dd9db1b261a44920db6c95d19c51,
+  enemyPrefab: {fileID: 6546033836175168340, guid: 011e18817835f35479265ddd4f2e5e8a,
     type: 3}
   health: 100
   isActive: 0
