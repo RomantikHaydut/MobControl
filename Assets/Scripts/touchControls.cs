@@ -23,7 +23,7 @@ public class touchControls : MonoBehaviour
     public bool isBound;
     public bool isMoving;
     public bool canGiantSpawn;
-    [SerializeField] private float castleScore = 200;
+
     private Animator animator;
 
     private void Awake()
