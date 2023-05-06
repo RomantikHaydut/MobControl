@@ -27,7 +27,7 @@ public class SpawnManager : MonoBehaviour
         {
             GameObject projectileClone = Instantiate(projectilePrefab, spawnCenter.position, spawnCenter.rotation);
             spawnScore++;
-            projectileClone.GetComponent<Clone>().FastStart();
+            projectileClone.GetComponentInChildren<Clone>().FastStart();
         }
     }
 
@@ -47,7 +47,8 @@ public class SpawnManager : MonoBehaviour
     }
     bool checkSpawnScore(bool canGiant)
     {
-        if (spawnScore >= maxSpawnScore && canGiant)
+        if (spawnScore >= maxSpawnScore && canGiant
+            )
         {
             spawnScore = 0;
             return true;

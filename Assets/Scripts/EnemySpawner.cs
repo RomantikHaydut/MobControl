@@ -7,7 +7,8 @@ public class EnemySpawner : MonoBehaviour
 {
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private float health = 100;
-   // [SerializeField] Text healthText;
+    [SerializeField] private float castleScore = 200;
+    // [SerializeField] Text healthText;
     public bool isActive = false;
 
     private void Update()
@@ -16,7 +17,7 @@ public class EnemySpawner : MonoBehaviour
     }
     private void OnEnable()
     {
-            InvokeRepeating("Spawn", 1f, .5f);
+            InvokeRepeating("Spawn", 1f, 4f);
     }
 
     private void Spawn()
@@ -40,6 +41,7 @@ public class EnemySpawner : MonoBehaviour
             EnemyClone[] enemyClone = GameObject.FindObjectsOfType<EnemyClone>();
             for (int i = 0; i < enemyClone.Length; i++)
                 Destroy(enemyClone[i].gameObject);
+            FindObjectOfType<GameManager>().addGoldScore(castleScore);
             FindAnyObjectByType<touchControls>().moveWithCamera(transform);
             this.gameObject.SetActive(false);
         }
