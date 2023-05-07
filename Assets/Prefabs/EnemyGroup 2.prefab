@@ -176,6 +176,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Redmonsterbig_rig (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 6909701091611059384, guid: eb5c0eb01c5dee4448aa50dfdaea2a30,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eb5c0eb01c5dee4448aa50dfdaea2a30, type: 3}
 --- !u!4 &2534441258625372535 stripped

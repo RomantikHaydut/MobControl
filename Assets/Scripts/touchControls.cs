@@ -23,7 +23,7 @@ public class touchControls : MonoBehaviour
     public bool isBound;
     public bool isMoving;
     public bool canGiantSpawn;
-
+    [SerializeField] private Transform vehicle;
     private Animator animator;
 
     private void Awake()
@@ -88,8 +88,8 @@ public class touchControls : MonoBehaviour
     {
         //if (spawnCooldown <= 0)
         //{
-            SpawnManager.Instance.SpawnProjectile(spawnPosition, canGiantSpawn);
-            //StartCoroutine(SpawnCooldownTimer_Corotine());
+        SpawnManager.Instance.SpawnProjectile(spawnPosition, canGiantSpawn);
+        //StartCoroutine(SpawnCooldownTimer_Corotine());
         //}
     }
 
@@ -118,18 +118,23 @@ public class touchControls : MonoBehaviour
         Transform point2 = pm.getSubPoint();
         Transform nextTransform = FindAnyObjectByType<CastleManager>().nextCastle();
         Camera.main.transform.parent = transform;
-        transform.DOMove(point.position, 3).OnComplete(() =>
-        {
-            transform.DORotateQuaternion(Quaternion.LookRotation(nextTransform.position - transform.position), 3).OnComplete(() =>
+
+        vehicle.DORotate(new Vector3(vehicle.transform.eulerAngles.x, vehicle.transform.eulerAngles.y + 90, vehicle.transform.eulerAngles.z), 1f).OnComplete(() => {
+            transform.DOMove(point.position, 3).OnComplete(() =>
             {
-                transform.DOMove(point2.position, 3).OnComplete(() =>
+                transform.DORotateQuaternion(Quaternion.LookRotation(nextTransform.position - transform.position), 1).OnComplete(() =>
                 {
-                    Camera.main.transform.parent = null;
-                    FindAnyObjectByType<CastleManager>().activateCastle();
-                    rightBound = pm.getSubPoint().position.x + pm.getBoundPoint();
-                    leftBound = pm.getSubPoint().position.x - pm.getBoundPoint();
-                    isMoving = false;
-                }); 
+                    vehicle.DORotate(new Vector3(vehicle.transform.eulerAngles.x, vehicle.transform.eulerAngles.y - 90, vehicle.transform.eulerAngles.z), 1f);
+                    transform.DOMove(point2.position, 3).OnComplete(() =>
+                    {
+                        
+                        Camera.main.transform.parent = null;
+                        FindAnyObjectByType<CastleManager>().activateCastle();
+                        rightBound = pm.getSubPoint().position.x + pm.getBoundPoint();
+                        leftBound = pm.getSubPoint().position.x - pm.getBoundPoint();
+                        isMoving = false;
+                    });
+                });
             });
         }); 
     }

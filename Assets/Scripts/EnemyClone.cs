@@ -10,7 +10,7 @@ public class EnemyClone : MonoBehaviour
     private float speed;
     private float damage;
     private bool isFighting = false;
-
+    [SerializeField] List<SkinnedMeshRenderer> skinnedMeshRendererList = new List<SkinnedMeshRenderer>();
     private Material myMaterial;
     private Color normalColor;
     private Color popupColor;
@@ -26,6 +26,11 @@ public class EnemyClone : MonoBehaviour
         normalColor = myMaterial.color;
     }
 
+    private void Start()
+    {
+        transform.parent = null;
+    }
+
     private void FixedUpdate()
     {
         Movement();
@@ -37,9 +42,18 @@ public class EnemyClone : MonoBehaviour
 
     private void Popup()
     {
-        myMaterial.color = normalColor;
+        DOTween.Kill(this);
+        foreach (SkinnedMeshRenderer renderer in skinnedMeshRendererList)
+        {
+            renderer.material.color = Color.white;
+        }
+
         float popupTime = 0.1f;
-        myMaterial.DOColor(popupColor, popupTime).OnComplete(() => { myMaterial.DOColor(normalColor, popupTime); });
+
+        foreach (SkinnedMeshRenderer renderer in skinnedMeshRendererList)
+        {
+            renderer.material.DOColor(Color.blue, popupTime).OnComplete(() => { renderer.material.DOColor(Color.white, popupTime); });
+        }
     }
 
     public void TakeDamage(float damage, Clone clone)
@@ -49,7 +63,7 @@ public class EnemyClone : MonoBehaviour
         if (health <= 0)
         {
             clone.FinishFight();
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
 

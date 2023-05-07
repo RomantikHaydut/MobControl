@@ -107,12 +107,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectileType: {fileID: 11400000, guid: f96e51563b5cd074cb07991d9ee2db64, type: 2}
   myMaterial: {fileID: 0}
-  normalColor: {r: 1, g: 1, b: 1, a: 0}
   popupColor: {r: 1, g: 0, b: 0, a: 0}
+  blueScore: 1
+  gm: {fileID: 0}
   skinnedMeshRendererList:
   - {fileID: 570135953932710468}
   - {fileID: 6966721419886986356}
-  isGiant: 1
+  normalColorList: []
 --- !u!54 &7640152965489699130
 Rigidbody:
   m_ObjectHideFlags: 0
