@@ -23,6 +23,7 @@ public class touchControls : MonoBehaviour
     public bool isBound;
     public bool isMoving;
     public bool canGiantSpawn;
+
     private Animator animator;
 
     private void Awake()
@@ -129,7 +130,6 @@ public class touchControls : MonoBehaviour
                     leftBound = pm.getSubPoint().position.x - pm.getBoundPoint();
                     isMoving = false;
                 }); 
-               
             });
         }); 
     }

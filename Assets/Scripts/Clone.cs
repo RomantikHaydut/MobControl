@@ -13,6 +13,8 @@ public class Clone : MonoBehaviour
     [SerializeField] private Material myMaterial;
     [SerializeField] private Color normalColor;
     [SerializeField] private Color popupColor;
+    [SerializeField] private float blueScore = 1;
+    [SerializeField] private GameManager gm;
     private Vector3 direction;
     [SerializeField] List<SkinnedMeshRenderer>  skinnedMeshRendererList = new List<SkinnedMeshRenderer>();
     MeshRenderer meshRenderer;
@@ -26,6 +28,7 @@ public class Clone : MonoBehaviour
         direction = transform.forward;
 
         popupColor = projectileType.popupColor;
+        gm = FindObjectOfType<GameManager>();
     }
 
 
@@ -47,7 +50,7 @@ public class Clone : MonoBehaviour
         {
             isDead = true;
             DOTween.Kill(this);
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
 
@@ -115,6 +118,7 @@ public class Clone : MonoBehaviour
         if (collision.gameObject.TryGetComponent(out EnemySpawner enemySpawner))
         {
             enemySpawner.takeDamage();
+            gm.addBlueScore(blueScore);
             Destroy(this.gameObject);
         }
     }
