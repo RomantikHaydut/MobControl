@@ -7,7 +7,9 @@ public class Button : MonoBehaviour, IPointerDownHandler
 {
     public void OnPointerDown(PointerEventData eventData)
     {
+      
         GameManager.instance.gameStart();
         gameObject.SetActive(false);
+        FindAnyObjectByType<Door>().setBool(true);
     }
 }

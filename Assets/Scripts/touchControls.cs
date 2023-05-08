@@ -23,6 +23,7 @@ public class touchControls : MonoBehaviour
     public bool isBound;
     public bool isMoving;
     public bool isFinished;
+    public bool isStarted;
     public bool canGiantSpawn;
     [SerializeField] private Transform vehicle;
     private Animator animator;
@@ -44,11 +45,11 @@ public class touchControls : MonoBehaviour
         {
             Movement();
         }
+
     }
 
     private void Movement()
     {
-
         if (Input.touchCount > 0)
         {
             theTouch = Input.GetTouch(0);

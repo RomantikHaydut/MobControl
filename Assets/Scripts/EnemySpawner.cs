@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 using UnityEngine.UI;
 
 public class EnemySpawner : MonoBehaviour
@@ -8,13 +9,19 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private GameObject[] enemyPrefabList;
     [SerializeField] private float health = 100;
     [SerializeField] private float castleScore = 200;
+    [SerializeField] private TextMeshProUGUI healthText;
+    [SerializeField] private Animator shaking;
+    [SerializeField] private AudioSource damage;
     // [SerializeField] Text healthText;
     public bool isActive = false;
     private touchControls touchControls;
 
     private void Start()
     {
+        healthText.text = health.ToString();
         touchControls = FindAnyObjectByType<touchControls>();
+        shaking = GetComponent<Animator>();
+        damage = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -39,6 +46,9 @@ public class EnemySpawner : MonoBehaviour
     public void takeDamage()
     {
         health -= 1;
+        shaking.SetBool("isDamage", true);
+        damage.Play();
+        healthText.text = health.ToString();
         if (health <= 0)
         {
             isActive = false;
@@ -51,13 +61,21 @@ public class EnemySpawner : MonoBehaviour
             GameManager.instance.addGoldScore(castleScore);
             if (FindAnyObjectByType<CastleManager>().index == 3)
             {
+                shaking.SetBool("isDamage", false);
                 GameManager.instance.winGame();
             }
             else
             {
+                shaking.SetBool("isDamage", false);
                 touchControls.moveWithCamera(transform);
                 this.gameObject.SetActive(false);
             }
         }
+        Invoke("set_bool",1f);
+
+    }
+    public void set_bool()
+    {
+        shaking.SetBool("isDamage", false);
     }
 }

@@ -46,6 +46,11 @@ public class GameManager : MonoBehaviour
             SceneManager.LoadScene(0);
         }
     }
+
+    public void nextRestart()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
     public void setScores()
     {
         loot_blueText.text = blueScore.ToString();
@@ -72,6 +77,7 @@ public class GameManager : MonoBehaviour
 
     public void winGame()
     {
+        FindAnyObjectByType<Door>().setBool(false);
         setScores();
         winPanel.SetActive(true);
         winPanel.transform.DOMove(new Vector3(Screen.width / 2, Screen.height / 2, 0), 2f);
@@ -79,6 +85,7 @@ public class GameManager : MonoBehaviour
     }
     public void finishGame()
     {
+        FindAnyObjectByType<Door>().setBool(false);
         timeScaling = Time.timeScale;
         DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 0.2f, 1f).OnComplete(() => { DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 1, 1f); });
         castleManager.inactiveCastle();
