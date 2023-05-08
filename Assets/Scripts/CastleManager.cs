@@ -16,4 +16,9 @@ public class CastleManager : MonoBehaviour
     {
         return castles[index].transform;
     }
+
+    public void inactiveCastle()
+    {
+        castles[index - 1].GetComponent<EnemySpawner>().isActive = false;
+    }
 }

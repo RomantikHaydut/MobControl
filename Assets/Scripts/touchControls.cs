@@ -22,8 +22,9 @@ public class touchControls : MonoBehaviour
     #endregion
     public bool isBound;
     public bool isMoving;
+    public bool isFinished;
     public bool canGiantSpawn;
-
+    [SerializeField] private Transform vehicle;
     private Animator animator;
 
     private void Awake()
@@ -39,7 +40,7 @@ public class touchControls : MonoBehaviour
     }
     private void Update()
     {
-        if (!isMoving)
+        if (!isMoving && !isFinished)
         {
             Movement();
         }
@@ -54,7 +55,6 @@ public class touchControls : MonoBehaviour
             if (theTouch.phase == TouchPhase.Began)
             {
                 StartFire();
-                canGiantSpawn = false;
             }
             if (theTouch.phase == TouchPhase.Stationary || theTouch.phase == TouchPhase.Moved)
             {
@@ -69,7 +69,8 @@ public class touchControls : MonoBehaviour
             }
             if (theTouch.phase == TouchPhase.Ended)
             {
-                canGiantSpawn = true;
+                if (FindObjectOfType<SpawnManager>().spawnScore >= FindObjectOfType<SpawnManager>().maxSpawnScore)
+                    canGiantSpawn = true;
                 StopFire();
             }
         }
@@ -86,11 +87,10 @@ public class touchControls : MonoBehaviour
 
     private void SpawnProjectile()
     {
-        //if (spawnCooldown <= 0)
-        //{
+        if (!isMoving)
+        {
             SpawnManager.Instance.SpawnProjectile(spawnPosition, canGiantSpawn);
-            //StartCoroutine(SpawnCooldownTimer_Corotine());
-        //}
+        }
     }
 
     private IEnumerator SpawnCooldownTimer_Corotine()
@@ -118,19 +118,36 @@ public class touchControls : MonoBehaviour
         Transform point2 = pm.getSubPoint();
         Transform nextTransform = FindAnyObjectByType<CastleManager>().nextCastle();
         Camera.main.transform.parent = transform;
-        transform.DOMove(point.position, 3).OnComplete(() =>
-        {
-            transform.DORotateQuaternion(Quaternion.LookRotation(nextTransform.position - transform.position), 3).OnComplete(() =>
+
+        vehicle.DORotate(new Vector3(vehicle.transform.eulerAngles.x, vehicle.transform.eulerAngles.y + 90, vehicle.transform.eulerAngles.z), 1f).OnComplete(() => {
+            transform.DOMove(point.position, 3).OnComplete(() =>
             {
-                transform.DOMove(point2.position, 3).OnComplete(() =>
+                transform.DORotateQuaternion(Quaternion.LookRotation(nextTransform.position - transform.position), 1).OnComplete(() =>
                 {
-                    Camera.main.transform.parent = null;
-                    FindAnyObjectByType<CastleManager>().activateCastle();
-                    rightBound = pm.getSubPoint().position.x + pm.getBoundPoint();
-                    leftBound = pm.getSubPoint().position.x - pm.getBoundPoint();
-                    isMoving = false;
-                }); 
+                    vehicle.DORotate(new Vector3(vehicle.transform.eulerAngles.x, vehicle.transform.eulerAngles.y - 90, vehicle.transform.eulerAngles.z), 1f);
+                    transform.DOMove(point2.position, 3).OnComplete(() =>
+                    {
+                        
+                        Camera.main.transform.parent = null;
+                        FindAnyObjectByType<CastleManager>().activateCastle();
+                        rightBound = pm.getSubPoint().position.x + pm.getBoundPoint();
+                        leftBound = pm.getSubPoint().position.x - pm.getBoundPoint();
+                        isMoving = false;
+                    });
+                });
             });
         }); 
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.TryGetComponent(out EnemyClone enemy))
+        {
+            if (!isFinished)
+            {
+                isFinished = true;
+                GameManager.instance.setScores();
+                GameManager.instance.finishGame();
+            }
+        }
     }
 }
