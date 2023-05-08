@@ -4,17 +4,23 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
+using DG.Tweening;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     [SerializeField] GameObject startButton;
+    [SerializeField] GameObject finishPanel; 
+    [SerializeField] GameObject continuePanel;
+    [SerializeField] GameObject winPanel;
     [SerializeField] CastleManager castleManager;
     [SerializeField] private float blueScore = 0;
     [SerializeField] private float goldScore = 0;
     [SerializeField] private TextMeshProUGUI goldText;
     [SerializeField] private TextMeshProUGUI blueText;
-
+    [SerializeField] private TextMeshProUGUI loot_goldText;
+    [SerializeField] private TextMeshProUGUI loot_blueText;
+    float timeScaling;
     private void Awake()
     {
         instance = this;
@@ -27,9 +33,22 @@ public class GameManager : MonoBehaviour
 
     public void nextLevel()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        int sceneIndex = SceneManager.GetActiveScene().buildIndex;
+        int totalSceneCount = SceneManager.sceneCountInBuildSettings;
+        if (sceneIndex < totalSceneCount - 1) // Bir sonraki sahne var ise.
+        {
+            SceneManager.LoadScene(sceneIndex + 1);
+        }
+        else
+        {
+            SceneManager.LoadScene(0);
+        }
     }
-
+    public void setScores()
+    {
+        loot_blueText.text = blueScore.ToString();
+        loot_goldText.text = goldScore.ToString();
+    }
     public void addGoldScore(float addScore)
     {
         goldScore += addScore;
@@ -40,5 +59,25 @@ public class GameManager : MonoBehaviour
     {
         blueScore += addScore;
         blueText.text = blueScore.ToString();
+    }
+    public void continueBut()
+    {
+        continuePanel.SetActive(false);
+        finishPanel.SetActive(true);
+    }
+
+    public void winGame()
+    {
+        winPanel.SetActive(true);
+    }
+    public void finishGame()
+    {
+        timeScaling = Time.timeScale;
+        DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 0.2f, 1f).OnComplete(()=> { DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 1, 1f); });
+        castleManager.inactiveCastle();
+        Clone[] clones = GameObject.FindObjectsOfType<Clone>();
+        for (int i = 0; i < clones.Length; i++)
+            Destroy(clones[i].gameObject);
+        continuePanel.SetActive(true);
     }
 }

@@ -7,7 +7,7 @@ public class SpawnManager : MonoBehaviour
     public static SpawnManager Instance;
     [SerializeField] private GameObject projectilePrefab;
     [SerializeField] private GameObject projectilePrefabGiant;
-    [SerializeField] private float spawnScore = 0;
+    [SerializeField] public float spawnScore = 0;
     public float maxSpawnScore = 10;
     private void Awake()
     {
@@ -22,6 +22,7 @@ public class SpawnManager : MonoBehaviour
         {
             GameObject projectileClone = Instantiate(projectilePrefabGiant, spawnCenter.position, spawnCenter.rotation); // devlerin çoðalmasý
             projectileClone.GetComponent<Clone>().FastStart();
+            FindObjectOfType<touchControls>().canGiantSpawn = false;
         }
         else
         {
@@ -47,8 +48,7 @@ public class SpawnManager : MonoBehaviour
     }
     bool checkSpawnScore(bool canGiant)
     {
-        if (spawnScore >= maxSpawnScore && canGiant
-            )
+        if (spawnScore >= maxSpawnScore && canGiant)
         {
             spawnScore = 0;
             return true;

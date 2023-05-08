@@ -117,6 +117,11 @@ public class EnemyClone : MonoBehaviour
                 StartFight(clone);
             }
         }
+        if (other.gameObject.TryGetComponent(out touchControls tc))
+        {
+            speed = 0;
+            Destroy(this.gameObject, 1f);
+        }
     }
 
     //private void OnTriggerStay(Collider other)

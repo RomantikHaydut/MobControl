@@ -22,6 +22,7 @@ public class touchControls : MonoBehaviour
     #endregion
     public bool isBound;
     public bool isMoving;
+    public bool isFinished;
     public bool canGiantSpawn;
     [SerializeField] private Transform vehicle;
     private Animator animator;
@@ -39,7 +40,7 @@ public class touchControls : MonoBehaviour
     }
     private void Update()
     {
-        if (!isMoving)
+        if (!isMoving && !isFinished)
         {
             Movement();
         }
@@ -54,7 +55,6 @@ public class touchControls : MonoBehaviour
             if (theTouch.phase == TouchPhase.Began)
             {
                 StartFire();
-                canGiantSpawn = false;
             }
             if (theTouch.phase == TouchPhase.Stationary || theTouch.phase == TouchPhase.Moved)
             {
@@ -69,7 +69,8 @@ public class touchControls : MonoBehaviour
             }
             if (theTouch.phase == TouchPhase.Ended)
             {
-                canGiantSpawn = true;
+                if (FindObjectOfType<SpawnManager>().spawnScore >= FindObjectOfType<SpawnManager>().maxSpawnScore)
+                    canGiantSpawn = true;
                 StopFire();
             }
         }
@@ -86,11 +87,10 @@ public class touchControls : MonoBehaviour
 
     private void SpawnProjectile()
     {
-        //if (spawnCooldown <= 0)
-        //{
-        SpawnManager.Instance.SpawnProjectile(spawnPosition, canGiantSpawn);
-        //StartCoroutine(SpawnCooldownTimer_Corotine());
-        //}
+        if (!isMoving)
+        {
+            SpawnManager.Instance.SpawnProjectile(spawnPosition, canGiantSpawn);
+        }
     }
 
     private IEnumerator SpawnCooldownTimer_Corotine()
@@ -137,5 +137,17 @@ public class touchControls : MonoBehaviour
                 });
             });
         }); 
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.TryGetComponent(out EnemyClone enemy))
+        {
+            if (!isFinished)
+            {
+                isFinished = true;
+                GameManager.instance.setScores();
+                GameManager.instance.finishGame();
+            }
+        }
     }
 }

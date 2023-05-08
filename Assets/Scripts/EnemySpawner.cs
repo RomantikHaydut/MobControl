@@ -49,8 +49,15 @@ public class EnemySpawner : MonoBehaviour
             for (int i = 0; i < enemyClone.Length; i++)
                 Destroy(enemyClone[i].gameObject);
             GameManager.instance.addGoldScore(castleScore);
-            touchControls.moveWithCamera(transform);
-            this.gameObject.SetActive(false);
+            if (FindAnyObjectByType<CastleManager>().index == 2)
+            {
+                GameManager.instance.winGame();
+            }
+            else
+            {
+                touchControls.moveWithCamera(transform);
+                this.gameObject.SetActive(false);
+            }
         }
     }
 }
