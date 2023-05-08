@@ -20,6 +20,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI blueText;
     [SerializeField] private TextMeshProUGUI loot_goldText;
     [SerializeField] private TextMeshProUGUI loot_blueText;
+    [SerializeField] private TextMeshProUGUI loot_goldText2;
+    [SerializeField] private TextMeshProUGUI loot_blueText2;
     float timeScaling;
     private void Awake()
     {
@@ -48,6 +50,8 @@ public class GameManager : MonoBehaviour
     {
         loot_blueText.text = blueScore.ToString();
         loot_goldText.text = goldScore.ToString();
+        loot_blueText2.text = blueScore.ToString();
+        loot_goldText2.text = goldScore.ToString();
     }
     public void addGoldScore(float addScore)
     {
@@ -68,6 +72,7 @@ public class GameManager : MonoBehaviour
 
     public void winGame()
     {
+        setScores();
         winPanel.SetActive(true);
         winPanel.transform.DOMove(new Vector3(Screen.width / 2, Screen.height / 2, 0), 2f);
         DOTween.To(() => winPanel.GetComponent<CanvasGroup>().alpha, x => winPanel.GetComponent<CanvasGroup>().alpha = x, 1f, 2f).OnComplete(()=> { winPanel.transform.GetChild(1).gameObject.SetActive(true); });
