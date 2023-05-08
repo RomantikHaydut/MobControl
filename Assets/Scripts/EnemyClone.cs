@@ -82,7 +82,7 @@ public class EnemyClone : MonoBehaviour
 
     private IEnumerator Fight_Coroutine(Clone clone)
     {
-        float fightDelay = 0.25f;
+        float fightDelay = 0.15f;
         bool isEnemyDead;
         while (true)
         {

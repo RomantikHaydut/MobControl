@@ -15,7 +15,7 @@ MonoBehaviour:
   type: 0
   level: 1
   health: 150
-  speed: 0.51
-  damage: 40
+  speed: 0.3
+  damage: 70
   normalColor: {r: 1, g: 0.972549, b: 0.003921569, a: 0}
   popupColor: {r: 1, g: 0.99215686, b: 0.654902, a: 0}
