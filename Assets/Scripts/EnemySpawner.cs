@@ -49,7 +49,7 @@ public class EnemySpawner : MonoBehaviour
             for (int i = 0; i < enemyClone.Length; i++)
                 Destroy(enemyClone[i].gameObject);
             GameManager.instance.addGoldScore(castleScore);
-            if (FindAnyObjectByType<CastleManager>().index == 2)
+            if (FindAnyObjectByType<CastleManager>().index == 3)
             {
                 GameManager.instance.winGame();
             }

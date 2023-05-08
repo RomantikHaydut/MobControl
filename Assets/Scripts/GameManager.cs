@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     [SerializeField] GameObject startButton;
-    [SerializeField] GameObject finishPanel; 
+    [SerializeField] GameObject finishPanel;
     [SerializeField] GameObject continuePanel;
     [SerializeField] GameObject winPanel;
     [SerializeField] CastleManager castleManager;
@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
     {
         instance = this;
     }
-    
+
     public void gameStart()
     {
         castleManager.activateCastle();
@@ -69,11 +69,13 @@ public class GameManager : MonoBehaviour
     public void winGame()
     {
         winPanel.SetActive(true);
+        winPanel.transform.DOMove(new Vector3(Screen.width / 2, Screen.height / 2, 0), 2f);
+        DOTween.To(() => winPanel.GetComponent<CanvasGroup>().alpha, x => winPanel.GetComponent<CanvasGroup>().alpha = x, 1f, 2f).OnComplete(()=> { winPanel.transform.GetChild(1).gameObject.SetActive(true); });
     }
     public void finishGame()
     {
         timeScaling = Time.timeScale;
-        DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 0.2f, 1f).OnComplete(()=> { DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 1, 1f); });
+        DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 0.2f, 1f).OnComplete(() => { DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 1, 1f); });
         castleManager.inactiveCastle();
         Clone[] clones = GameObject.FindObjectsOfType<Clone>();
         for (int i = 0; i < clones.Length; i++)
