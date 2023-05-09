@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class Multiplier : MonoBehaviour
 {
@@ -17,7 +18,7 @@ public class Multiplier : MonoBehaviour
                 if (!IsCloneCloned(clone))
                 {
                     AddCloneToList(clone);
-                    SpawnManager.Instance.SpawnProjectile(other.gameObject.transform, other.gameObject, multiplierFactor, this);
+                    SpawnManager.Instance.SpawnProjectile(other.gameObject.transform, other.gameObject, multiplierFactor - 1, this);
                 }
             }
         }

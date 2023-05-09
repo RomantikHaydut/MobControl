@@ -107,7 +107,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectileType: {fileID: 11400000, guid: f96e51563b5cd074cb07991d9ee2db64, type: 2}
   myMaterial: {fileID: 0}
-  popupColor: {r: 1, g: 0, b: 0, a: 0}
+  popupColor: {r: 0.990566, g: 0.7887148, b: 0.7887148, a: 1}
   blueScore: 1
   gm: {fileID: 0}
   skinnedMeshRendererList:

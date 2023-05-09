@@ -52,7 +52,7 @@ public class SpawnManager : MonoBehaviour
         float angle = 0f; // baþlangýç açýsý
         for (int i = 0; i < spawnCount; i++)
         {
-            Vector3 spawnPosition = spawnCenter.position + Random.onUnitSphere * 0.1f; // nesnenin yaratýlacaðý konum
+            Vector3 spawnPosition = spawnCenter.position + Random.onUnitSphere * spawnObject.GetComponentInChildren<CapsuleCollider>().radius * 2; // nesnenin yaratýlacaðý konum
             spawnPosition.y = spawnObject.transform.position.y;
             Clone clone = Instantiate(spawnObject, spawnPosition, spawnCenter.rotation).GetComponent<Clone>(); // nesneyi yarat
             multiplier.AddCloneToList(clone);

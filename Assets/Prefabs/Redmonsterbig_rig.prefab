@@ -325,6 +325,7 @@ MonoBehaviour:
   projectileType: {fileID: 11400000, guid: 764019acbe8df664eac5497a04c3f7be, type: 2}
   skinnedMeshRendererList:
   - {fileID: 7809081315568817143}
+  popupColor: {r: 0.63312405, g: 0.390566, b: 1, a: 1}
 --- !u!54 &2921597230584783137
 Rigidbody:
   m_ObjectHideFlags: 0

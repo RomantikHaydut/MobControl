@@ -8,7 +8,7 @@ public class PositionManager : MonoBehaviour
     [SerializeField] public List<Transform> subPoints;
     [SerializeField] public List<float> boundValues;
     int index = 0;
-    private void Awake()
+    private void Start()
     {
         foreach (var point in FindAnyObjectByType<CastleManager>().castles)
         {

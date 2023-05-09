@@ -19,7 +19,8 @@ public class Clone : MonoBehaviour
     [SerializeField] List<SkinnedMeshRenderer> skinnedMeshRendererList = new List<SkinnedMeshRenderer>();
     [SerializeField] private List<Color> normalColorList = new List<Color>();
     MeshRenderer meshRenderer;
-    void Awake()
+    private Sequence sequence;
+    void Start()
     {
         health = projectileType.health;
         speed = projectileType.speed;
@@ -27,7 +28,6 @@ public class Clone : MonoBehaviour
 
         direction = transform.forward;
 
-        popupColor = projectileType.popupColor;
         gm = FindObjectOfType<GameManager>();
     }
 
@@ -62,12 +62,17 @@ public class Clone : MonoBehaviour
             renderer.material.color = Color.white;
         }
 
-        float popupTime = 0.1f;
+        float popupTime = 0.15f;
 
         foreach (SkinnedMeshRenderer renderer in skinnedMeshRendererList)
         {
-            renderer.material.DOColor(Color.green, popupTime).OnComplete(() => { renderer.material.DOColor(Color.white, popupTime); });
+            sequence = DOTween.Sequence().Append(renderer.material.DOColor(popupColor, popupTime).OnComplete(() => { sequence = DOTween.Sequence().Append(renderer.material.DOColor(Color.white, popupTime)); }));
         }
+    }
+
+    private void OnDisable()
+    {
+        sequence.Kill();
     }
 
     public float GetDamage()
