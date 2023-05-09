@@ -10,6 +10,9 @@ public class CastleManager : MonoBehaviour
     {
         castles[index].GetComponent<EnemySpawner>().isActive = true;
         index++;
+        Multiplier[] multiplier = FindObjectsOfType<Multiplier>();
+        for (int i = 0; i < multiplier.Length; i++)
+            multiplier[i].canMultiplier = true;
     }
 
     public Transform nextCastle()

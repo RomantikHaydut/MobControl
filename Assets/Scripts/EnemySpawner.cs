@@ -52,12 +52,15 @@ public class EnemySpawner : MonoBehaviour
         if (health <= 0)
         {
             isActive = false;
+            Multiplier[] multiplier = FindObjectsOfType<Multiplier>();
+            for (int i = 0; i < multiplier.Length; i++)
+                multiplier[i].canMultiplier = false;
             Clone[] clones = GameObject.FindObjectsOfType<Clone>();
             for (int i = 0; i < clones.Length; i++)
-                Destroy(clones[i].gameObject);
+                Destroy(clones[i].gameObject, 1f);
             EnemyClone[] enemyClone = GameObject.FindObjectsOfType<EnemyClone>();
             for (int i = 0; i < enemyClone.Length; i++)
-                Destroy(enemyClone[i].gameObject);
+                Destroy(enemyClone[i].gameObject, 1f);
             GameManager.instance.addGoldScore(castleScore);
             if (FindAnyObjectByType<CastleManager>().index == 3)
             {
@@ -71,9 +74,11 @@ public class EnemySpawner : MonoBehaviour
                 this.gameObject.SetActive(false);
             }
         }
-        Invoke("set_bool",1f);
+        Invoke("set_bool", 1f);
 
     }
+
+
     public void set_bool()
     {
         shaking.SetBool("isDamage", false);

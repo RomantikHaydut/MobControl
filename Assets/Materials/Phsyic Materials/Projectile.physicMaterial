@@ -7,8 +7,8 @@ PhysicMaterial:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Projectile
-  dynamicFriction: 1
-  staticFriction: 1
-  bounciness: 0
-  frictionCombine: 3
+  dynamicFriction: 0.7
+  staticFriction: 0.7
+  bounciness: 0.01
+  frictionCombine: 0
   bounceCombine: 1

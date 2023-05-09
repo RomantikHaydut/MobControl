@@ -6,15 +6,19 @@ public class Multiplier : MonoBehaviour
 {
     [SerializeField] private int multiplierFactor = 1;
     private List<Clone> cloneList = new List<Clone>();
+    public bool canMultiplier = true;
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.TryGetComponent(out Clone clone))
         {
-            if (!IsCloneCloned(clone))
+            if (canMultiplier)
             {
-                AddCloneToList(clone);
-                SpawnManager.Instance.SpawnProjectile(other.gameObject.transform, other.gameObject, multiplierFactor, this);
+                if (!IsCloneCloned(clone))
+                {
+                    AddCloneToList(clone);
+                    SpawnManager.Instance.SpawnProjectile(other.gameObject.transform, other.gameObject, multiplierFactor, this);
+                }
             }
         }
     }
@@ -31,4 +35,6 @@ public class Multiplier : MonoBehaviour
     {
         return cloneList.Contains(clone);
     }
+
+
 }
