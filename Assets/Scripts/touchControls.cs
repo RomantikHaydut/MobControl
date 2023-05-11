@@ -27,6 +27,8 @@ public class touchControls : MonoBehaviour
     public bool canGiantSpawn;
     [SerializeField] private Transform vehicle;
     private Animator animator;
+    private float firstMousePos;
+    private float lastMousePos;
 
     private void Awake()
     {
@@ -50,31 +52,35 @@ public class touchControls : MonoBehaviour
 
     private void Movement()
     {
-        if (Input.touchCount > 0)
+        if (Input.GetMouseButtonDown(0))
         {
-            theTouch = Input.GetTouch(0);
-            if (theTouch.phase == TouchPhase.Began)
+            StartFire();
+            firstMousePos = Input.mousePosition.x;
+        }
+        else if (Input.GetMouseButton(0))
+        {
+            float fark = 0;
+            if (firstMousePos != Input.mousePosition.x)
             {
-                StartFire();
+                fark = Input.mousePosition.x - firstMousePos;
+                firstMousePos = Input.mousePosition.x;
             }
-            if (theTouch.phase == TouchPhase.Stationary || theTouch.phase == TouchPhase.Moved)
+            float coefficient = (fark / Screen.width * sensitivity);
+            if ((transform.position + transform.right * coefficient).x < rightBound)
             {
-                float coefficient = (theTouch.deltaPosition.x / Screen.width * sensitivity);
-                if ((transform.position + transform.right * coefficient).x < rightBound)
+                if ((transform.position + transform.right * coefficient).x > leftBound)
                 {
-                    if ((transform.position + transform.right * coefficient).x > leftBound)
-                    {
-                        transform.position += transform.right * (theTouch.deltaPosition.x / Screen.width * sensitivity);
-                    }
+                    transform.position += transform.right * coefficient;
                 }
             }
-            if (theTouch.phase == TouchPhase.Ended)
-            {
-                if (FindObjectOfType<SpawnManager>().spawnScore >= FindObjectOfType<SpawnManager>().maxSpawnScore)
-                    canGiantSpawn = true;
-                StopFire();
-            }
         }
+        else if (Input.GetMouseButtonUp(0))
+        {
+            if (FindObjectOfType<SpawnManager>().spawnScore >= FindObjectOfType<SpawnManager>().maxSpawnScore)
+                canGiantSpawn = true;
+            StopFire();
+        }
+
     }
 
     private void StartFire()
@@ -120,7 +126,8 @@ public class touchControls : MonoBehaviour
         Transform nextTransform = FindAnyObjectByType<CastleManager>().nextCastle();
         Camera.main.transform.parent = transform;
 
-        vehicle.DORotate(new Vector3(vehicle.transform.eulerAngles.x, vehicle.transform.eulerAngles.y + 90, vehicle.transform.eulerAngles.z), 1f).OnComplete(() => {
+        vehicle.DORotate(new Vector3(vehicle.transform.eulerAngles.x, vehicle.transform.eulerAngles.y + 90, vehicle.transform.eulerAngles.z), 1f).OnComplete(() =>
+        {
             transform.DOMove(point.position, 3).OnComplete(() =>
             {
                 transform.DORotateQuaternion(Quaternion.LookRotation(nextTransform.position - transform.position), 1).OnComplete(() =>
@@ -128,7 +135,7 @@ public class touchControls : MonoBehaviour
                     vehicle.DORotate(new Vector3(vehicle.transform.eulerAngles.x, vehicle.transform.eulerAngles.y - 90, vehicle.transform.eulerAngles.z), 1f);
                     transform.DOMove(point2.position, 3).OnComplete(() =>
                     {
-                        
+
                         Camera.main.transform.parent = null;
                         FindAnyObjectByType<CastleManager>().activateCastle();
                         rightBound = pm.getSubPoint().position.x + pm.getBoundPoint();
@@ -137,7 +144,7 @@ public class touchControls : MonoBehaviour
                     });
                 });
             });
-        }); 
+        });
     }
     private void OnTriggerEnter(Collider other)
     {

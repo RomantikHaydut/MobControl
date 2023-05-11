@@ -27,12 +27,6 @@ public class GameManager : MonoBehaviour
     {
         instance = this;
     }
-
-    private void Start()
-    {
-        Cursor.visible = false;
-    }
-
     public void gameStart()
     {
         castleManager.activateCastle();
